@@ -1042,7 +1042,8 @@ public class PhoneInterfaceManager extends ITelephony.Stub {
 
     private UiccCard getUiccCardUsingSubId(int subId) {
         Phone phone = getPhone(subId);
-        return UiccController.getInstance().getUiccCard(phone.getPhoneId());
+        return phone == null ? null :
+                UiccController.getInstance().getUiccCard(phone.getPhoneId());
     }
 
     //
@@ -1128,7 +1129,7 @@ public class PhoneInterfaceManager extends ITelephony.Stub {
      * @return true is a call was ended
      */
     public boolean endCallForSubscriber(int subId) {
-        if (mApp.checkCallingOrSelfPermission(permission.MODIFY_PHONE_STATE)
+        if (mApp.checkCallingOrSelfPermission(android.Manifest.permission.MODIFY_PHONE_STATE)
                 != PackageManager.PERMISSION_GRANTED) {
             Log.i(LOG_TAG, "endCall: called without modify phone state.");
             EventLog.writeEvent(0x534e4554, "67862398", -1, "");
